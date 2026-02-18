@@ -26,11 +26,11 @@ uploads/
 upload_XXXX_filename.ext
 
 ├─────────────────────────────────────────────────────────────────────────┐
-│  2) EXTRACTION LAYER (processors.py)  ← user-visible results             │
+│  2) EXTRACTION LAYER (processors/)  ← user-visible results               │
 └─────────────────────────────────────────────────────────────────────────┘
 │
 ├─ PDF Processor
-│   • pdfplumber → text/tables (when PDF has real text)
+│   • PyMuPDF → text/tables (when PDF has real text)
 │   • Tesseract OCR (ara) → scanned pages / low-text pages
 │   • Detect tables + image metadata
 │   • Compute quality metrics
@@ -115,7 +115,7 @@ Backend:
 • FastAPI (main.py)
 
 Extraction:
-• pdfplumber (PDF)
+• PyMuPDF (PDF)
 • Tesseract OCR + ara language pack (Arabic OCR)
 • python-docx (DOCX)
 • python-pptx (PPTX)
