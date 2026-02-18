@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env
+
+# Runtime data (generated when the app runs)
+uploads/
+results/
+rag_storage/
+upload_counter.txt
+evaluation_log.csv
+
+# Accidental pip install artifact
+=0.3.10
+
+# Mac system files
+.DS_Store

@@ -1,0 +1,128 @@
+═══════════════════════════════════════════════════════════════
+  WHERE EVERYTHING IS STORED
+═══════════════════════════════════════════════════════════════
+
+When you upload a file, the system automatically creates and stores
+data in three locations:
+
+
+📁 1. ORIGINAL FILES
+─────────────────────────────────────────────────────────────────
+Location: ./uploads/
+
+Files saved as: upload_XXXX_filename.ext
+Example: upload_0001_document.pdf
+
+This is your original file, preserved exactly as uploaded.
+
+
+📄 2. EXTRACTED TEXT & METADATA
+─────────────────────────────────────────────────────────────────
+Location: ./results/
+
+Files saved as: result_upload_XXXX_filename.json
+Example: result_upload_0001_document.json
+
+Contains:
+  • Full extracted text (per page)
+  • Tables with structure
+  • Image metadata
+  • Quality metrics
+  • OCR confidence scores
+  • Arabic text (raw + normalized)
+
+
+🔢 3. VECTOR EMBEDDINGS (Automatic)
+─────────────────────────────────────────────────────────────────
+Location: ./rag_storage/{file_id}/
+
+Each document gets a UUID folder containing:
+
+  ├── chunks.json          Document split into 512-char chunks
+  │                        with page numbers and metadata
+  │
+  ├── embeddings.npy       384-dimensional vectors
+  │                        (NumPy array format)
+  │
+  ├── faiss.index         FAISS IndexFlatL2 search index
+  │                        (binary format)
+  │
+  └── metadata.json       Processing information
+                          (model, dimensions, chunk count)
+
+
+═══════════════════════════════════════════════════════════════
+
+📊 PROCESSING PIPELINE:
+
+1. Upload file → Saved to uploads/
+2. Extract text → Saved to results/
+3. Chunk document → 512 characters per chunk (50 overlap)
+4. Generate embeddings → Multilingual model (384-dim)
+5. Create FAISS index → Fast similarity search
+6. Save vectors → Persistent storage in rag_storage/
+
+All happens automatically in the background!
+
+
+═══════════════════════════════════════════════════════════════
+
+🌍 ARABIC SUPPORT:
+
+The multilingual embedding model supports 50+ languages including:
+  • Arabic (العربية)
+  • English
+  • French
+  • Spanish
+  • German
+  • And many more...
+
+Vector embeddings work seamlessly across all languages.
+
+
+═══════════════════════════════════════════════════════════════
+
+💾 STORAGE SIZE (Approximate):
+
+For a 10-page PDF document:
+  • Original file: ~500 KB
+  • Extraction JSON: ~50 KB
+  • Chunks JSON: ~30 KB
+  • Embeddings: ~15 KB (chunks × 384 × 4 bytes)
+  • FAISS index: ~15 KB
+
+Total: ~610 KB per document
+
+
+═══════════════════════════════════════════════════════════════
+
+🔍 HOW TO VIEW STORED DATA:
+
+1. Original files:
+   ls -lh uploads/
+
+2. Extraction results:
+   cat results/result_upload_0001_filename.json | jq
+
+3. Vector chunks:
+   cat rag_storage/{file-id}/chunks.json | jq
+
+4. Vector metadata:
+   cat rag_storage/{file-id}/metadata.json
+
+
+═══════════════════════════════════════════════════════════════
+
+✅ BENEFITS:
+
+• Everything is preserved and versioned
+• Vector embeddings ready for future search features
+• Multilingual support out of the box
+• Persistent storage survives server restarts
+• No data loss - all formats retained
+
+
+═══════════════════════════════════════════════════════════════
+
+Version: 2.5.0
+Date: 2026-02-05
